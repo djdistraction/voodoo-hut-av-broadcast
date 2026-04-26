@@ -1,0 +1,122 @@
+# =============================================================================
+# The Voodoo Hut — AzuraCast Docker Compose Configuration
+# =============================================================================
+# Deploy: sudo docker compose up -d
+# Update: sudo docker compose pull && sudo docker compose up -d
+# Logs:   sudo docker compose logs -f
+#
+# NOTE: Copy azuracast.env.example to azuracast.env and fill in all values
+#       before running. NEVER commit azuracast.env to git.
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # AzuraCast Web Application
+  # ---------------------------------------------------------------------------
+  web:
+    image: ghcr.io/azuracast/azuracast:latest
+    container_name: azuracast_web
+    restart: always
+    ports:
+      - "80:80"           # HTTP (redirect to HTTPS)
+      - "443:443"         # HTTPS (Let's Encrypt / web panel)
+      - "8000:8000"       # Icecast public stream port
+      - "8005:8005"       # Live DJ input — Stage A (Main Stage)
+      - "8006:8006"       # Live DJ input — Stage B (DJ Booth)
+      - "8007:8007"       # Live DJ input — Stage C (Acoustic Stage)
+    env_file:
+      - azuracast.env
+    volumes:
+      - azuracast_data:/var/azuracast
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - azuracast_internal
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  # ---------------------------------------------------------------------------
+  # MariaDB Database
+  # ---------------------------------------------------------------------------
+  db:
+    image: mariadb:10.11
+    container_name: azuracast_db
+    restart: always
+    env_file:
+      - azuracast.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=azuracast
+      - MYSQL_USER=azuracast
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - azuracast_internal
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ---------------------------------------------------------------------------
+  # Nginx Reverse Proxy (SSL termination)
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: azuracast_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - web
+    networks:
+      - azuracast_internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  azuracast_data:
+    driver: local
+  db_data:
+    driver: local
+  nginx_logs:
+    driver: local
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  azuracast_internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
