@@ -1,4 +1,4 @@
-# 🎭 The Voodoo Hut — AV & Broadcast Integration System
+# The Voodoo Hut — AV & Broadcast Integration System
 
 > **Transforming a 14,000 sq ft venue into a broadcast-ready digital entertainment powerhouse.**
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Executive Summary](#executive-summary)
 - [System Architecture](#system-architecture)
