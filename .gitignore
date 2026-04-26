@@ -1,0 +1,112 @@
+# === OS Files ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# === Editor & IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+*.orig
+
+# === Logs ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === Environment & Secrets ===
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+private/
+
+# === AzuraCast / Docker ===
+azuracast.env
+docker-compose.override.yml
+.docker/
+stations/
+backups/
+uploads/
+
+# === OBS ===
+# OBS stores large config files locally - exclude binary ones
+*.obs
+*.ovpn
+
+# === Audio Files (too large for git) ===
+*.wav
+*.aiff
+*.flac
+*.mp3
+*.mp4
+*.m4a
+*.ogg
+*.aac
+playlists/media/
+radio/media/
+
+# === Video Files ===
+*.mov
+*.avi
+*.mkv
+*.wmv
+*.prproj
+
+# === Database Files ===
+*.db
+*.sqlite
+*.sqlite3
+
+# === Compiled / Build Output ===
+dist/
+build/
+out/
+*.pyc
+__pycache__/
+node_modules/
+vendor/
+
+# === Terraform ===
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# === Ansible ===
+*.retry
+inventory/hosts
+group_vars/all/vault.yml
+
+# === Temporary Files ===
+tmp/
+temp/
+cache/
+.cache/
+
+# === Network Device Exports (vendor-specific binary configs) ===
+*.rsc
+*.cfg.gz
+
+# === Dante/Audio Config Sensitive Data ===
+# Include YAML configs but exclude exported binary presets
+audio/dante/exports/*.dantesetting
