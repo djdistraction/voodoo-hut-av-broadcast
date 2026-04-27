@@ -57,7 +57,7 @@
 | Amplifier | Location | Zones Served | Channels |
 |---|---|---|---|
 | Amp Rack A | Stage Left | Main Stage Front, Rear, Dance Floor | 6 ch |
-| Amp Rack B | Stage Right | DJ Booth, Corner Stage, Acoustic Stage | 6 ch |
+| Amp Rack B | Stage Right | Corner Stage, Corner Stage, Acoustic Stage | 6 ch |
 | Amp Rack C | Bar Area | Restrooms, Corridors, Staff | 6 ch |
 
 ---
@@ -77,7 +77,7 @@
 | Item | Model | Location | Output | Notes |
 |---|---|---|---|---|
 | Main Stage Cam | Mevo Start / Mevo Core | Main Stage | NDI|HX | PTZ control via app |
-| DJ Booth Cam | Mevo Start / Mevo Core | DJ Booth | NDI|HX | Fixed wide angle |
+| Corner Stage Cam | Mevo Start / Mevo Core | Corner Stage | NDI|HX | Fixed wide angle |
 | Acoustic Stage Cam | Mevo Start / Mevo Core | Acoustic Stage | NDI|HX | PTZ control via app |
 
 ---
@@ -97,7 +97,7 @@
 | Machine | Role | Location | OBS Instance |
 |---|---|---|---|
 | Stream PC A | Main Stage Stream | Tech Booth | OBS-A (voodoo-main-stage) |
-| Stream PC B | DJ Booth Stream | Tech Booth | OBS-B (voodoo-dj-booth) |
+| Stream PC B | Corner Stage Stream | Tech Booth | OBS-B (voodoo-corner-stage) |
 | Stream PC C | Acoustic Stage Stream | Tech Booth | OBS-C (voodoo-acoustic) |
 
 ### Recommended Stream PC Specs

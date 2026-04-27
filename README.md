@@ -166,7 +166,7 @@ X32 (AES50-A) ──Cat5e STP──► S16 Main Stage (AES50-B) ──Cat5e STP�
 | Machine | Role | Audio Source | OBS Scene Collection |
 |---|---|---|---|
 | Stream PC A | Main Stage stream | X32 USB Card Out (Bus 9/10) | `voodoo-main-stage.json` |
-| Stream PC B | Corner Stage stream | X32 USB Card Out (Bus 11/12) | `voodoo-dj-booth.json` |
+| Stream PC B | Corner Stage stream | X32 USB Card Out (Bus 11/12) | `voodoo-corner-stage.json` |
 | Stream PC C | Patio Stage stream | X32 USB Card Out (Bus 13/14) | `voodoo-acoustic.json` |
 | Venue PC | BUTT live RTMP push | X32 USB broadcast mix | BUTT → AzuraCast port 8005 |
 

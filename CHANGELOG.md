@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Standardized stage naming to "Corner Stage" across all documents (was inconsistently "DJ Booth" in some files)
+- Removed duplicate nginx service from docker-compose.yml that conflicted with AzuraCast's internal reverse proxy on ports 80/443
+- Corrected OBS scene filename reference in README.md (voodoo-dj-booth.json → voodoo-corner-stage.json)
+
+### Added
+- Interactive pitch presentation (`pitch/index.html`) — self-contained HTML deck for stakeholder meetings
+
 ### Planned
 - OBS scene collections for all three stages
 - Liquidsoap AutoDJ configuration for AzuraCast
@@ -41,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `infrastructure/` — Oracle Cloud, Docker, backups
 
 ### Project Scope Defined
-- 3 simultaneous live stage streams (Main Stage, DJ Booth, Acoustic Stage)
+- 3 simultaneous live stage streams (Main Stage, Corner Stage, Acoustic/Patio Stage)
 - 15 independent acoustic zones across 14,000 sq ft
 - 37 televisions managed via video matrix
 - 24/7 internet radio via AzuraCast on Oracle Cloud Free Tier
