@@ -63,7 +63,7 @@ network/
 |---|---|---|
 | 192.168.20.1 | Core Switch | Gateway / IGMP Querier |
 | 192.168.20.10 | Mevo (Main Stage) | NDI|HX source |
-| 192.168.20.11 | Mevo (DJ Booth) | NDI|HX source |
+| 192.168.20.11 | Mevo (Corner Stage) | NDI|HX source |
 | 192.168.20.12 | Mevo (Acoustic Stage) | NDI|HX source |
 | 192.168.20.20–56 | BirdDog Decoders | NDI → HDMI (37 TVs) |
 | 192.168.20.60 | HDMI Matrix Switcher | Central video routing |

@@ -51,7 +51,7 @@ The system is organized into five interconnected layers:
 | Stage | Type | Primary Use |
 |---|---|---|
 | Stage A (Main Stage) | Full Band | Rock, Blues, Country |
-| Stage B (DJ Booth) | DJ / Electronic | Dance, EDM, Hip-Hop |
+| Stage B (Corner Stage) | DJ / Electronic | Dance, EDM, Hip-Hop |
 | Stage C (Acoustic Stage) | Solo / Duo Acoustic | Intimate performances |
 
 ### Digital Mixing (Layer 2)
