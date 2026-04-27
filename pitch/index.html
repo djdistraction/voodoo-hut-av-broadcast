@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voodoo Hut — Digital Entertainment Revolution</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #060608;
+      color: #f0eeec;
+      font-family: 'Oswald', sans-serif;
+    }
+
+    :root {
+      --black: #060608;
+      --red: #e01020;
+      --red-bright: #ff3040;
+      --cyan: #00c8c8;
+      --gold: #c8a020;
+      --white: #f0eeec;
+      --dark-card: #16161b;
+      --muted: #666870;
+    }
+
+    /* Background canvas */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    /* Main deck */
+    #deck {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
+
+    /* Slides */
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 80px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* Typography */
+    h1 {
+      font-size: clamp(48px, 10vw, 120px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--red);
+      text-shadow: 0 0 40px rgba(224, 16, 32, 0.6);
+      line-height: 0.95;
+    }
+
+    h2 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+    }
+
+    p {
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.6;
+      color: rgba(240, 238, 236, 0.8);
+      max-width: 700px;
+    }
+
+    .label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .accent-line {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--cyan));
+      margin: 16px auto;
+    }
+
+    .big-number {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .big-number.red { color: var(--red); text-shadow: 0 0 30px rgba(224, 16, 32, 0.5); }
+    .big-number.cyan { color: var(--cyan); }
+
+    /* Cards */
+    .card {
+      background: var(--dark-card);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 12px;
+    }
+
+    .card.red { border-left: 3px solid var(--red); }
+    .card.cyan { border-left: 3px solid var(--cyan); }
+
+    /* Grid layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; width: 100%; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; width: 100%; }
+
+    /* Navigation */
+    #nav-dots {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-dot.active {
+      background: var(--red);
+      transform: scale(1.5);
+    }
+
+    #slide-counter {
+      position: fixed;
+      bottom: 20px;
+      right: 32px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      z-index: 100;
+    }
+
+    #nav-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Feature cards */
+    .feature-card {
+      background: var(--dark-card);
+      border: 1px solid rgba(0, 200, 200, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 200, 200, 0.1);
+    }
+
+    .feature-icon { font-size: 32px; margin-bottom: 8px; }
+    .feature-title { font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--white); margin-bottom: 6px; letter-spacing: 0.08em; }
+    .feature-desc { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    /* Stage cards */
+    .stage-card {
+      background: var(--dark-card);
+      border-radius: 8px;
+      border-top: 3px solid;
+      padding: 20px;
+    }
+
+    .stage-card.main { border-color: var(--red); }
+    .stage-card.corner { border-color: var(--cyan); }
+    .stage-card.patio { border-color: var(--gold); }
+
+    .stage-name { font-size: 18px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; color: var(--white); }
+    .stage-hw { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); margin-bottom: 12px; }
+
+    /* Revenue chart */
+    #chart-canvas { width: 100%; max-width: 800px; height: 280px; }
+
+    /* Phase timeline */
+    .phase-timeline {
+      display: flex;
+      width: 100%;
+      max-width: 1100px;
+      gap: 0;
+      position: relative;
+      padding-top: 30px;
+    }
+
+    .phase-timeline::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--cyan));
+    }
+
+    .phase-item {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+
+    .phase-dot {
+      width: 14px;
+      height: 14px;
+      background: var(--black);
+      border: 2px solid var(--red);
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phase-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--white); }
+
+    /* HTXPunk branding */
+    .htxpunk-text {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .htxpunk-text .htx { color: var(--white); }
+    .htxpunk-text .punk { color: var(--red); }
+
+    /* Waveform */
+    .waveform {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      height: 40px;
+    }
+
+    .waveform-bar {
+      width: 2px;
+      background: var(--red);
+      border-radius: 1px;
+      animation: wave 0.8s ease-in-out infinite;
+    }
+
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 20px; }
+    }
+
+    /* TV grid */
+    .tv-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .tv-icon {
+      aspect-ratio: 16/10;
+      background: var(--dark-card);
+      border: 1px solid var(--cyan);
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(0, 200, 200, 0.2);
+      animation: tv-glow 2s infinite alternate;
+    }
+
+    @keyframes tv-glow {
+      from { box-shadow: 0 0 4px rgba(0, 200, 200, 0.1); }
+      to { box-shadow: 0 0 12px rgba(0, 200, 200, 0.4); }
+    }
+
+    /* Signal flow SVG */
+    #signal-svg-container {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    /* Revenue cards */
+    .revenue-card {
+      background: var(--dark-card);
+      border-left: 3px solid var(--gold);
+      border-radius: 6px;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .revenue-name { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--white); margin-bottom: 6px; }
+    .revenue-amount { font-family: 'Share Tech Mono', monospace; font-size: 16px; color: var(--gold); margin-bottom: 4px; }
+    .revenue-desc { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); }
+
+    /* CTA buttons */
+    .cta-pills {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cta-pill {
+      background: var(--dark-card);
+      border: 1px solid rgba(0, 200, 200, 0.3);
+      border-radius: 25px;
+      padding: 8px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+    }
+
+    .cta-pill.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+
+    /* Slide-specific */
+    #s1 { justify-content: space-around; }
+    #s1 h1 { margin: 20px 0; }
+
+    .venue-tagline {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 16px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin: 12px 0;
+    }
+
+    .kemah-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      border: 1px solid rgba(200, 160, 32, 0.4);
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      align-items: flex-start;
+      margin: 20px 0;
+    }
+
+    .stat-block { text-align: center; }
+    .stat-num { margin-bottom: 4px; }
+    .stat-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+    .zero-stat { border-left: 2px solid var(--red); padding-left: 20px; }
+
+    /* Radio mockup */
+    .radio-mockup {
+      background: var(--dark-card);
+      border: 1px solid rgba(0, 200, 200, 0.2);
+      border-radius: 8px;
+      padding: 16px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .radio-title { font-size: 18px; font-weight: 700; color: var(--red); margin-bottom: 8px; text-transform: uppercase; }
+    .radio-playing { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--cyan); margin-bottom: 8px; }
+    .radio-bar { height: 3px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+    .radio-progress { height: 100%; width: 40%; background: linear-gradient(90deg, var(--red), var(--cyan)); animation: progress 8s linear infinite; }
+    @keyframes progress { from { width: 0%; } to { width: 100%; } }
+    .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(224, 16, 32, 0.2); border: 1px solid var(--red); border-radius: 3px; padding: 3px 8px; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--red); letter-spacing: 0.1em; }
+    .live-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: pulse-dot 1s infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div id="deck">
+    <!-- SLIDE 1: HERO -->
+    <section class="slide active" id="s1">
+      <div class="kemah-badge">KEMAH, TEXAS</div>
+      <h1>VOODOO HUT</h1>
+      <div class="venue-tagline">AV & Broadcast Integration System</div>
+      <p style="font-size: 20px; margin: 12px 0;">No Hurries. No Worries.<br><span style="color: var(--red);">Unlimited Reach.</span></p>
+      <div class="waveform" id="waveform"></div>
+      <div style="margin-top: 24px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.15em;">
+        PRODUCED BY <span style="color: var(--cyan);">HTX</span><span style="color: var(--red);">PUNK</span>.COM
+      </div>
+    </section>
+
+    <!-- SLIDE 2: OPPORTUNITY -->
+    <section class="slide" id="s2">
+      <div class="label">THE OPPORTUNITY</div>
+      <h2>Every Night, World-Class Music<br>Disappears Into Thin Air.</h2>
+      <div class="accent-line"></div>
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="big-number cyan">3</div>
+          <div class="stat-label">Live Stages</div>
+        </div>
+        <div class="stat-block">
+          <div class="big-number cyan">37</div>
+          <div class="stat-label">Screens</div>
+        </div>
+        <div class="stat-block">
+          <div class="big-number cyan">15</div>
+          <div class="stat-label">Audio Zones</div>
+        </div>
+        <div class="stat-block zero-stat">
+          <div class="big-number red">0</div>
+          <div class="stat-label" style="color: var(--red);">Live Streams</div>
+        </div>
+      </div>
+      <div class="accent-line"></div>
+      <p>The infrastructure, the talent, and the audience already exist. What's missing is the system that broadcasts it to the world — and monetizes every moment.</p>
+    </section>
+
+    <!-- SLIDE 3: VISION -->
+    <section class="slide" id="s3">
+      <div class="label">WHAT WE'RE BUILDING</div>
+      <h2>Five Systems. One Seamless Machine.</h2>
+      <div class="accent-line"></div>
+      <div class="grid-5" style="max-width: 1100px; margin-top: 20px;">
+        <div class="feature-card">
+          <div class="feature-icon">📻</div>
+          <div class="feature-title">24/7 Radio</div>
+          <div class="feature-desc">Licensed house music AutoDJ on Oracle Cloud, seamless live transitions.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📡</div>
+          <div class="feature-title">3 Live Streams</div>
+          <div class="feature-desc">One stream per stage. YouTube, Twitch, Facebook simultaneously.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔊</div>
+          <div class="feature-title">15 Zones</div>
+          <div class="feature-desc">Independent DSP control per area. Scheduled automation.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📺</div>
+          <div class="feature-title">37 Screens</div>
+          <div class="feature-desc">NDI over ethernet. Zero HDMI cable runs.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-title">Global Reach</div>
+          <div class="feature-desc">1.2B+ listeners. 365-day brand presence online.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: ARCHITECTURE -->
+    <section class="slide" id="s4">
+      <div class="label">SYSTEM ARCHITECTURE</div>
+      <h2>The Signal Flow</h2>
+      <div id="signal-svg-container">
+        <svg id="signal-svg" viewBox="0 0 900 300" style="width: 100%; height: auto;">
+          <!-- Main Stage -->
+          <rect x="50" y="20" width="100" height="45" rx="4" fill="none" stroke="#e01020" stroke-width="1.5"/>
+          <text x="100" y="40" text-anchor="middle" fill="#e01020" font-size="11" font-weight="700" font-family="Oswald">MAIN STAGE</text>
+          <text x="100" y="55" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">S16 · 16ch</text>
+
+          <!-- Corner Stage -->
+          <rect x="400" y="20" width="100" height="45" rx="4" fill="none" stroke="#e01020" stroke-width="1.5"/>
+          <text x="450" y="40" text-anchor="middle" fill="#e01020" font-size="11" font-weight="700" font-family="Oswald">CORNER</text>
+          <text x="450" y="55" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">X32 · 8ch</text>
+
+          <!-- Patio Stage -->
+          <rect x="750" y="20" width="100" height="45" rx="4" fill="none" stroke="#e01020" stroke-width="1.5"/>
+          <text x="800" y="40" text-anchor="middle" fill="#e01020" font-size="11" font-weight="700" font-family="Oswald">PATIO</text>
+          <text x="800" y="55" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">SD8 · 8ch</text>
+
+          <!-- Converge to X32 -->
+          <line x1="100" y1="65" x2="100" y2="90" stroke="#e01020" stroke-width="1"/>
+          <line x1="450" y1="65" x2="450" y2="90" stroke="#e01020" stroke-width="1"/>
+          <line x1="800" y1="65" x2="800" y2="90" stroke="#e01020" stroke-width="1"/>
+          <line x1="100" y1="90" x2="450" y2="90" stroke="#e01020" stroke-width="1"/>
+          <line x1="800" y1="90" x2="450" y2="90" stroke="#e01020" stroke-width="1"/>
+
+          <!-- X32 FOH -->
+          <rect x="350" y="100" width="200" height="50" rx="4" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+          <text x="450" y="120" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" font-family="Oswald">BEHRINGER X32</text>
+          <text x="450" y="135" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">FOH · AES50 MASTER</text>
+
+          <!-- Three output paths -->
+          <!-- PA Path (red) -->
+          <line x1="380" y1="150" x2="180" y2="180" stroke="#e01020" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+          <rect x="100" y="180" width="160" height="45" rx="4" fill="none" stroke="#e01020" stroke-width="1.5"/>
+          <text x="180" y="200" text-anchor="middle" fill="#e01020" font-size="11" font-weight="700" font-family="Oswald">PA SYSTEM</text>
+          <text x="180" y="215" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">DriveRack + Amps</text>
+
+          <!-- Zone Path (cyan) -->
+          <line x1="450" y1="150" x2="450" y2="180" stroke="#00c8c8" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+          <rect x="370" y="180" width="160" height="45" rx="4" fill="none" stroke="#00c8c8" stroke-width="1.5"/>
+          <text x="450" y="200" text-anchor="middle" fill="#00c8c8" font-size="11" font-weight="700" font-family="Oswald">ZONE AUDIO</text>
+          <text x="450" y="215" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">ZonePRO 1260</text>
+
+          <!-- Broadcast Path (red) -->
+          <line x1="520" y1="150" x2="720" y2="180" stroke="#e01020" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+          <rect x="640" y="180" width="160" height="45" rx="4" fill="none" stroke="#e01020" stroke-width="1.5"/>
+          <text x="720" y="200" text-anchor="middle" fill="#e01020" font-size="11" font-weight="700" font-family="Oswald">OBS STREAMS</text>
+          <text x="720" y="215" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Share Tech Mono">USB Card Out</text>
+
+          <!-- To internet -->
+          <line x1="720" y1="225" x2="720" y2="250" stroke="#e01020" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+          <text x="720" y="270" text-anchor="middle" fill="#e01020" font-size="10" font-weight="700" font-family="Oswald">🌍 INTERNET</text>
+
+          <!-- Defs for markers -->
+          <defs>
+            <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <polygon points="0 0, 6 3, 0 6" fill="#e01020"/>
+            </marker>
+            <marker id="arrowCyan" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <polygon points="0 0, 6 3, 0 6" fill="#00c8c8"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: THREE STAGES -->
+    <section class="slide" id="s5">
+      <div class="label">MULTI-STAGE MASTERY</div>
+      <h2>Three Stages. Three Independent Streams.</h2>
+      <div class="accent-line"></div>
+      <div class="grid-3" style="max-width: 1000px; margin-top: 16px;">
+        <div class="stage-card main">
+          <div style="font-size: 28px; margin-bottom: 8px;">🎸</div>
+          <div class="stage-name">Main Stage</div>
+          <div class="stage-hw">Behringer S16 (16 Channel)</div>
+          <ul style="text-align: left; list-style: none; margin-top: 8px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(240, 238, 236, 0.7);">
+            <li>Full band / rock / country</li>
+            <li>20 total inputs (16+4 FOH)</li>
+            <li>Broadcast Bus 9/10 → Stream A</li>
+            <li>Studio multitrack recording</li>
+            <li>Mevo camera + OBS-A</li>
+          </ul>
+        </div>
+        <div class="stage-card corner">
+          <div style="font-size: 28px; margin-bottom: 8px;">🎧</div>
+          <div class="stage-name">Corner Stage</div>
+          <div class="stage-hw">X32 Local XLR (8 Channel)</div>
+          <ul style="text-align: left; list-style: none; margin-top: 8px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(240, 238, 236, 0.7);">
+            <li>DJ / electronic / hip-hop</li>
+            <li>8 X32 local inputs (Ch 17–24)</li>
+            <li>Broadcast Bus 11/12 → Stream B</li>
+            <li>Studio multitrack recording</li>
+            <li>Mevo camera + OBS-B</li>
+          </ul>
+        </div>
+        <div class="stage-card patio">
+          <div style="font-size: 28px; margin-bottom: 8px;">🎵</div>
+          <div class="stage-name">Patio Stage</div>
+          <div class="stage-hw">Behringer SD8 (8 Channel)</div>
+          <ul style="text-align: left; list-style: none; margin-top: 8px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(240, 238, 236, 0.7);">
+            <li>Solo / duo acoustic</li>
+            <li>90ms matrix delay for sync</li>
+            <li>Broadcast Bus 13/14 → Stream C</li>
+            <li>Studio multitrack recording</li>
+            <li>Mevo camera + OBS-C</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: NDI NETWORK -->
+    <section class="slide" id="s6">
+      <div class="label">VIDEO DISTRIBUTION</div>
+      <h2>37 Screens. Zero HDMI Cable Runs.</h2>
+      <div class="accent-line"></div>
+      <div style="display: flex; gap: 32px; align-items: flex-start; max-width: 1000px; margin-top: 16px;">
+        <div style="flex: 1;">
+          <h3 style="text-align: left; margin-bottom: 12px;">NDI|HX Over Ethernet</h3>
+          <p style="text-align: left; font-size: 14px;">Three Mevo cameras output 1080p@15Mbps. BirdDog PLAY decoders at each TV convert to HDMI. IGMP Snooping prevents multicast flooding to POS.</p>
+        </div>
+        <div style="flex: 1;">
+          <div class="tv-grid" id="tv-grid"></div>
+          <p style="text-align: right; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 8px;">37 independently routed displays</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: RADIO -->
+    <section class="slide" id="s7">
+      <div class="label">INTERNET RADIO</div>
+      <h2>The Voodoo Hut Radio Station</h2>
+      <div class="accent-line"></div>
+      <div style="display: flex; gap: 32px; align-items: flex-start; max-width: 1000px; margin-top: 16px;">
+        <div class="radio-mockup">
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.15em;">🎙 NOW PLAYING</div>
+          <div class="radio-title">Voodoo Hut Radio</div>
+          <div class="radio-playing">▶ The Bourbon Crusade — "Bayou Midnight" (LIVE)</div>
+          <div class="radio-bar"><div class="radio-progress"></div></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted);">
+            <span>Kemah, TX</span>
+            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+          </div>
+        </div>
+        <div>
+          <div class="card cyan" style="margin-bottom: 12px;">
+            <div class="big-number cyan" style="font-size: 42px;">1.2B+</div>
+            <p style="font-size: 13px; margin-top: 4px;">Internet radio listeners worldwide</p>
+          </div>
+          <div class="card red">
+            <div class="big-number red" style="font-size: 42px;">24/7</div>
+            <p style="font-size: 13px; margin-top: 4px;">Brand presence even on Tuesday at 3am</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: STREAMING -->
+    <section class="slide" id="s8">
+      <div class="label">LIVE STREAMING</div>
+      <h2>From Kemah to the World</h2>
+      <div class="accent-line"></div>
+      <div class="grid-3" style="max-width: 1000px; margin-top: 16px;">
+        <div class="card red">
+          <h3 style="color: var(--red-bright); margin-bottom: 8px;">YouTube</h3>
+          <ul style="list-style: none; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.6;">
+            <li>✓ 2.7B monthly users</li>
+            <li>✓ VOD auto-saved forever</li>
+            <li>✓ Ad monetization</li>
+          </ul>
+        </div>
+        <div class="card cyan">
+          <h3 style="color: var(--cyan); margin-bottom: 8px;">Twitch</h3>
+          <ul style="list-style: none; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.6;">
+            <li>✓ 35M daily viewers</li>
+            <li>✓ Music category booming</li>
+            <li>✓ Subs + bits monetization</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left: 3px solid var(--gold);">
+          <h3 style="color: var(--gold); margin-bottom: 8px;">Facebook Live</h3>
+          <ul style="list-style: none; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.6;">
+            <li>✓ 3B monthly users</li>
+            <li>✓ Local amplification</li>
+            <li>✓ Stars + fan subs</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top: 20px;">
+        <p><strong>Studio-quality multitrack recordings</strong> per show. Professional recordings attract top-tier talent.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: REVENUE STREAMS -->
+    <section class="slide" id="s9">
+      <div class="label">REVENUE GENERATION</div>
+      <h2>Six New Revenue Streams</h2>
+      <div class="accent-line"></div>
+      <div class="grid-3" style="max-width: 1100px; margin-top: 16px;">
+        <div class="revenue-card">
+          <div class="revenue-name">Digital Stream Sponsorships</div>
+          <div class="revenue-amount">$12K–$36K/yr</div>
+          <div class="revenue-desc">Logo overlays, branded segments, pre-roll ads.</div>
+        </div>
+        <div class="revenue-card">
+          <div class="revenue-name">VOD Content Sales</div>
+          <div class="revenue-amount">$5K–$20K/yr</div>
+          <div class="revenue-desc">Pay-per-view highlights, exclusive recordings.</div>
+        </div>
+        <div class="revenue-card">
+          <div class="revenue-name">Ticketed Online Events</div>
+          <div class="revenue-amount">$10K–$40K/yr</div>
+          <div class="revenue-desc">Premium live-streams for special events.</div>
+        </div>
+        <div class="revenue-card">
+          <div class="revenue-name">Internet Radio Ad Spots</div>
+          <div class="revenue-amount">$6K–$18K/yr</div>
+          <div class="revenue-desc">Business sponsorships, 30-sec spots.</div>
+        </div>
+        <div class="revenue-card">
+          <div class="revenue-name">Artist Recording Fees</div>
+          <div class="revenue-amount">$8K–$24K/yr</div>
+          <div class="revenue-desc">Bands pay for professional multitrack.</div>
+        </div>
+        <div class="revenue-card" style="border-left: 3px solid var(--cyan);">
+          <div class="revenue-name" style="color: var(--cyan);">TOTAL NEW REVENUE</div>
+          <div class="revenue-amount" style="color: var(--cyan); font-size: 20px;">$41K–$138K/yr</div>
+          <div class="revenue-desc">Year 2+ grows 60–80% from baseline.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: REVENUE CHART -->
+    <section class="slide" id="s10">
+      <div class="label">12-MONTH PROJECTION</div>
+      <h2>Projected Monthly Revenue Growth</h2>
+      <div class="accent-line"></div>
+      <canvas id="chart-canvas" style="max-width: 800px; margin: 20px auto;"></canvas>
+      <div style="display: flex; gap: 24px; justify-content: center; margin-top: 12px; font-family: 'Share Tech Mono', monospace; font-size: 11px;">
+        <span><span style="display: inline-block; width: 14px; height: 2px; background: var(--red); margin-right: 6px;"></span>Conservative</span>
+        <span><span style="display: inline-block; width: 14px; height: 2px; background: var(--cyan); margin-right: 6px;"></span>Moderate</span>
+        <span><span style="display: inline-block; width: 14px; height: 2px; background: var(--gold); margin-right: 6px;"></span>Optimistic</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: ROADMAP -->
+    <section class="slide" id="s11">
+      <div class="label">IMPLEMENTATION PLAN</div>
+      <h2>Eight Phases. One Mission.</h2>
+      <div class="accent-line"></div>
+      <div class="phase-timeline" style="margin-top: 32px;">
+        <div class="phase-item">
+          <div class="phase-dot" style="background: var(--red); box-shadow: 0 0 10px var(--red);"></div>
+          <div class="phase-title">Phase 1<br>Physical Cabling</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 1</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 2<br>X32 Routing</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 1–2</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 3<br>FX Strategy</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 2</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 4<br>DCA Groups</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 2–3</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 5<br>Zone Config</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 3</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 6<br>Broadcast Buses</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 3–4</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 7<br>AzuraCast</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 4</div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-dot"></div>
+          <div class="phase-title">Phase 8<br>NDI + OBS</div>
+          <div style="font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px;">Week 4–5</div>
+        </div>
+      </div>
+      <div class="grid-3" style="max-width: 900px; margin-top: 28px;">
+        <div class="card red" style="text-align: center;">
+          <div class="big-number red" style="font-size: 36px;">5 Weeks</div>
+          <p style="font-size: 13px; margin-top: 4px;">To full operation</p>
+        </div>
+        <div class="card cyan" style="text-align: center;">
+          <div style="font-size: 24px; font-weight: 700; color: var(--cyan);">"Set It Once"</div>
+          <p style="font-size: 13px; margin-top: 4px;">Fully automated transitions</p>
+        </div>
+        <div class="card" style="text-align: center; border-left: 3px solid var(--gold);">
+          <div style="font-size: 24px; font-weight: 700; color: var(--gold);">Ongoing</div>
+          <p style="font-size: 13px; margin-top: 4px;">Monthly maintenance available</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: TEAM -->
+    <section class="slide" id="s12">
+      <div class="label">YOUR PRODUCTION PARTNER</div>
+      <div class="htxpunk-text" style="margin-bottom: 16px;">
+        <span class="htx">HTX</span><span class="punk">PUNK</span>
+      </div>
+      <p style="font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--cyan); letter-spacing: 0.15em; margin-bottom: 12px;">HTXpunk.com</p>
+      <div class="accent-line"></div>
+      <p style="margin-top: 16px;">Independent production company specializing in live venue AV integration, broadcast infrastructure, and digital entertainment systems.</p>
+      <div style="display: flex; gap: 20px; margin-top: 20px; max-width: 900px;">
+        <div class="card cyan">
+          <h3 style="margin-bottom: 8px;">What We Deliver</h3>
+          <ul style="list-style: none; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: rgba(240, 238, 236, 0.7); text-align: left; line-height: 1.8;">
+            <li>✓ Full design, installation, configuration</li>
+            <li>✓ Staff training and documentation</li>
+            <li>✓ Ongoing maintenance &amp; support</li>
+            <li>✓ Content strategy setup</li>
+            <li>✓ Remote monitoring 24/7</li>
+          </ul>
+        </div>
+        <div class="card red">
+          <h3 style="color: var(--red-bright); margin-bottom: 8px;">Cross-Promotion</h3>
+          <p style="font-size: 13px;">HTXpunk amplifies Voodoo Hut's digital presence across the Houston music community. Your streams become content. Your content becomes culture.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: CTA -->
+    <section class="slide" id="s13">
+      <div class="label">THE NEXT MOVE</div>
+      <h1 style="margin: 20px 0;">Let's Make<br><span style="color: var(--red); text-shadow: 0 0 40px rgba(224, 16, 32, 0.6);">Voodoo Hut</span><br>Legendary.</h1>
+      <div class="accent-line"></div>
+      <p style="margin: 16px 0;">The infrastructure is designed. The roadmap is ready. The only thing left is the green light.</p>
+      <div class="cta-pills">
+        <div class="cta-pill active">01. Sign Contract</div>
+        <div class="cta-pill">02. Hardware Order</div>
+        <div class="cta-pill">03. Phase 1 Start</div>
+        <div class="cta-pill">04. Go Live</div>
+      </div>
+      <div style="margin-top: 32px; display: flex; gap: 32px; justify-content: center; font-family: 'Share Tech Mono', monospace; font-size: 12px;">
+        <div style="text-align: center;">
+          <div style="color: var(--muted); letter-spacing: 0.15em; margin-bottom: 4px;">PRODUCTION BY</div>
+          <div class="htxpunk-text" style="font-size: 18px;">
+            <span class="htx">HTX</span><span class="punk">PUNK</span>
+          </div>
+        </div>
+        <div style="width: 1px; background: var(--muted); opacity: 0.2;"></div>
+        <div style="text-align: center;">
+          <div style="color: var(--muted); letter-spacing: 0.15em; margin-bottom: 4px;">FOR</div>
+          <div style="font-size: 18px; font-weight: 700; color: var(--red);">VOODOO HUT</div>
+          <div style="font-size: 11px; color: var(--gold); letter-spacing: 0.1em;">KEMAH, TEXAS</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Navigation -->
+  <nav id="nav-dots"></nav>
+  <div id="slide-counter">1 / 13</div>
+  <div id="nav-hint">SPACE OR CLICK TO ADVANCE →</div>
+
+  <script>
+    // Background particles
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let particles = [];
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    for (let i = 0; i < 50; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        r: Math.random() * 1.5 + 0.5,
+        color: Math.random() > 0.6 ? '#e01020' : '#00c8c8'
+      });
+    }
+
+    function animateBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+      particles.forEach(p => {
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = p.color;
+        bgCtx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = bgCanvas.width;
+        if (p.x > bgCanvas.width) p.x = 0;
+        if (p.y < 0) p.y = bgCanvas.height;
+        if (p.y > bgCanvas.height) p.y = 0;
+      });
+
+      requestAnimationFrame(animateBg);
+    }
+    animateBg();
+
+    // Waveform bars
+    const waveform = document.getElementById('waveform');
+    if (waveform) {
+      for (let i = 0; i < 20; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        bar.style.animationDelay = (i * 0.06) + 's';
+        waveform.appendChild(bar);
+      }
+    }
+
+    // TV Grid
+    const tvGrid = document.getElementById('tv-grid');
+    if (tvGrid) {
+      for (let i = 0; i < 37; i++) {
+        const tv = document.createElement('div');
+        tv.className = 'tv-icon';
+        tvGrid.appendChild(tv);
+      }
+    }
+
+    // Navigation
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const navDotsEl = document.getElementById('nav-dots');
+    const counterEl = document.getElementById('slide-counter');
+    let currentSlide = 0;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goTo(i);
+      });
+      navDotsEl.appendChild(dot);
+    });
+
+    function goTo(n) {
+      if (n < 0 || n >= slides.length) return;
+      slides[currentSlide].classList.remove('active');
+      currentSlide = n;
+      slides[currentSlide].classList.add('active');
+
+      document.querySelectorAll('.nav-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === currentSlide);
+      });
+
+      counterEl.textContent = (currentSlide + 1) + ' / ' + slides.length;
+
+      if (currentSlide === 9) drawChart();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        goTo(currentSlide + 1);
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        goTo(currentSlide - 1);
+      }
+    });
+
+    document.getElementById('deck').addEventListener('click', () => {
+      goTo(currentSlide + 1);
+      document.getElementById('nav-hint').style.opacity = '0';
+    });
+
+    // Revenue chart
+    let chartDrawn = false;
+    function drawChart() {
+      if (chartDrawn) return;
+      chartDrawn = true;
+
+      const canvas = document.getElementById('chart-canvas');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = 280;
+      const ctx = canvas.getContext('2d');
+
+      const months = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+      const conservative = [0, 0, 1200, 2400, 3600, 4800, 5500, 6200, 7000, 7800, 8500, 9500];
+      const moderate = [0, 0, 2000, 3800, 5500, 7200, 8500, 9500, 10500, 11200, 12000, 13500];
+      const optimistic = [0, 0, 3000, 5500, 8000, 10500, 12000, 13500, 15000, 16500, 18000, 20000];
+
+      const W = canvas.width, H = canvas.height;
+      const pad = 50, maxVal = 22000;
+      const cW = W - pad * 2, cH = H - pad * 1.5;
+
+      // Grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad + cH * (1 - i/4);
+        ctx.beginPath();
+        ctx.moveTo(pad, y);
+        ctx.lineTo(W - pad, y);
+        ctx.stroke();
+      }
+
+      function drawLine(data, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        data.forEach((v, i) => {
+          const x = pad + (i / 11) * cW;
+          const y = pad + cH * (1 - v / maxVal);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        data.forEach((v, i) => {
+          const x = pad + (i / 11) * cW;
+          const y = pad + cH * (1 - v / maxVal);
+          ctx.beginPath();
+          ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+        });
+      }
+
+      drawLine(conservative, '#e01020');
+      drawLine(moderate, '#00c8c8');
+      drawLine(optimistic, '#c8a020');
+
+      // Labels
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.font = '10px "Share Tech Mono", monospace';
+      ctx.textAlign = 'center';
+      months.forEach((m, i) => {
+        const x = pad + (i / 11) * cW;
+        ctx.fillText(m, x, H - 8);
+      });
+    }
+  </script>
+</body>
+</html>
