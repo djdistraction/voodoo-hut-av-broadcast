@@ -2575,7 +2575,9 @@ footer {
 }
 
 /* ============================================================
-   LOGO — Real PNG with mix-blend-mode trick
+   LOGO — Oval sticker/patch PNG (white background)
+   Displayed as a badge. No blend mode needed — the oval
+   black border separates it from the dark nav cleanly.
    ============================================================ */
 .nav-logo-wrap {
   display: flex;
@@ -2584,12 +2586,16 @@ footer {
   text-decoration: none;
 }
 .logo-img {
-  height: 52px;
+  height: 56px;
   width: auto;
-  mix-blend-mode: screen; /* black bg becomes transparent */
-  transition: filter .3s ease;
+  border-radius: 4px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7));
+  transition: filter .3s ease, transform .3s ease;
 }
-.logo-img:hover { filter: brightness(1.15); }
+.logo-img:hover {
+  filter: drop-shadow(0 4px 18px rgba(224,16,32,0.6)) drop-shadow(0 0 8px rgba(0,200,200,0.3));
+  transform: scale(1.04);
+}
 
 .hero-logo-wrap {
   display: flex;
@@ -2597,15 +2603,14 @@ footer {
   margin-bottom: 24px;
 }
 .hero-logo-img {
-  width: min(320px, 75vw);
+  width: min(340px, 78vw);
   height: auto;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 40px rgba(224,16,32,0.5));
+  filter: drop-shadow(0 0 40px rgba(224,16,32,0.55)) drop-shadow(0 0 80px rgba(0,200,200,0.2));
   animation: hero-logo-pulse 4s ease-in-out infinite;
 }
 @keyframes hero-logo-pulse {
-  0%, 100% { filter: drop-shadow(0 0 30px rgba(224,16,32,0.4)); }
-  50%       { filter: drop-shadow(0 0 60px rgba(224,16,32,0.7)) drop-shadow(0 0 100px rgba(0,200,200,0.2)); }
+  0%, 100% { filter: drop-shadow(0 0 30px rgba(224,16,32,0.45)) drop-shadow(0 0 60px rgba(0,0,0,0.5)); }
+  50%       { filter: drop-shadow(0 0 60px rgba(224,16,32,0.75)) drop-shadow(0 0 100px rgba(0,200,200,0.3)); }
 }
 
 /* ============================================================
