@@ -16,7 +16,7 @@
 
   <nav id="main-nav" class="main-nav" aria-label="Main navigation">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">THE <span>VOODOO</span> HUT</a>
+      <a href="index.html" class="nav-logo-wrap" aria-label="The VooDoo Hut — Home"><img src="assets/images/logo.png" alt="VooDoo Hut" class="logo-img" /></a>
       <ul class="nav-links" role="list">
         <li><a href="index.html"    class="nav-link">Home</a></li>
         <li><a href="events.html"   class="nav-link">Events</a></li>
@@ -165,6 +165,8 @@
           <a href="contact.html?topic=reservation" class="btn btn-primary btn-lg">Reserve a Table</a>
           <a href="events.html" class="btn btn-outline btn-lg">View Events</a>
         </div>
+        <!-- Final scavenger reward — shown by easter-eggs.js when all clues found -->
+        <p id="about-secret-reward" class="secret-clue" style="display:none;margin-top:2rem;">💀 you found the face that doesn't want to be found 💀</p>
       </div>
     </div>
   </section>
@@ -242,5 +244,6 @@
   </div>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/easter-eggs.js"></script>
 </body>
 </html>
