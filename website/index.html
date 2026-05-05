@@ -19,9 +19,9 @@
 
   <!-- ===================== NAV ===================== -->
   <nav id="main-nav" class="main-nav" aria-label="Main navigation">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        THE <span>VOODOO</span> HUT
+    <div class="nav-inner container">
+      <a href="index.html" class="nav-logo-wrap" aria-label="The VooDoo Hut — Home">
+        <img src="assets/images/logo.png" alt="VooDoo Hut — No Hurries, No Worries" class="logo-img" />
       </a>
       <ul class="nav-links" role="list">
         <li><a href="index.html"    class="nav-link">Home</a></li>
@@ -53,14 +53,21 @@
   </div>
 
   <!-- ===================== HERO ===================== -->
-  <section class="hero" aria-label="Hero">
+  <section class="hero" aria-label="Hero" id="hero-section">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-content">
-      <p class="hero-eyebrow"><span class="live-dot" aria-hidden="true"></span> Live &amp; Broadcasting from Kemah, TX</p>
-      <h1 class="hero-title">Where the Music<br><span>Never Stops</span></h1>
-      <p class="hero-tagline">Three stages. 37 screens. Craft cocktails &amp; legendary food.<br>Now streaming worldwide — 24/7.</p>
+      <div class="hero-logo-wrap">
+        <a href="index.html" class="nav-logo-wrap hero-logo-wrap" aria-label="The VooDoo Hut">
+          <img src="assets/images/logo.png" alt="VooDoo Hut" class="logo-img hero-logo-img" />
+        </a>
+      </div>
+      <p class="hero-theology">Party Is Our Theology</p>
+      <h1 class="hero-main-title">14k Sq Ft of<br><em>Pure Voodoo</em></h1>
+      <p class="hero-nhw">No Hurries &nbsp;<em>·</em>&nbsp; No Worries &nbsp;<em>·</em>&nbsp; Kemah, Texas</p>
       <div class="hero-ctas">
         <a href="events.html" class="btn btn-primary btn-lg">See Upcoming Shows</a>
         <a href="live.html"   class="btn btn-outline btn-lg">Watch Live</a>
+        <a href="menu.html"   class="btn btn-outline btn-lg">The Menu</a>
       </div>
     </div>
     <div class="hero-scroll-indicator" aria-hidden="true">
@@ -340,6 +347,8 @@
       <div class="footer-bottom">
         <p>&copy; 2026 The Voodoo Hut. All rights reserved.</p>
         <p>Kemah, TX · <a href="mailto:info@voodoohut.com">info@voodoohut.com</a></p>
+        <!-- hidden entrance — if you found this, you know what to do -->
+        <p style="opacity:.04;font-size:9px;"><a href="the-bus.html" style="color:inherit;" tabindex="-1" aria-hidden="true">&#9679;</a></p>
       </div>
     </div>
   </footer>
@@ -366,6 +375,61 @@
   </div>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/easter-eggs.js"></script>
+  <script>
+    // Hero particle canvas
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function randomParticle() {
+        const isRed = Math.random() > 0.4;
+        return {
+          x: Math.random() * W,
+          y: H + Math.random() * 20,
+          r: 1 + Math.random() * 2.5,
+          speed: 0.4 + Math.random() * 0.8,
+          drift: (Math.random() - 0.5) * 0.6,
+          alpha: 0.6 + Math.random() * 0.4,
+          color: isRed ? `rgba(224,16,32,` : `rgba(0,200,200,`,
+          life: 0,
+          maxLife: 120 + Math.random() * 180,
+        };
+      }
+
+      for (let i = 0; i < 60; i++) {
+        const p = randomParticle();
+        p.y = Math.random() * H; // scatter on load
+        particles.push(p);
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, W, H);
+        if (particles.length < 80) particles.push(randomParticle());
+        particles = particles.filter(p => p.life < p.maxLife);
+        particles.forEach(p => {
+          p.y     -= p.speed;
+          p.x     += p.drift;
+          p.life++;
+          const fade = 1 - p.life / p.maxLife;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + (p.alpha * fade) + ')';
+          ctx.fill();
+        });
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+  </script>
   <script>
     // Mirror now-playing to the hero teaser
     const teaserTrack = document.getElementById('radio-teaser-track');

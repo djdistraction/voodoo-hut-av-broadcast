@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Bus — VooDoo Hut | Kemah, TX</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+    <div class="nav-inner container">
+      <a href="index.html" class="nav-logo-wrap" aria-label="The Voodoo Hut — Home">
+        <img src="assets/images/logo.png" alt="VooDoo Hut" class="logo-img" />
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html"   class="nav-link">Home</a></li>
+        <li><a href="events.html"  class="nav-link">Events</a></li>
+        <li><a href="menu.html"    class="nav-link">Menu</a></li>
+        <li><a href="live.html"    class="nav-link">Live Streams</a></li>
+        <li><a href="radio.html"   class="nav-link">Radio</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="about.html"   class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link btn btn-primary btn-sm">Reserve a Table</a></li>
+      </ul>
+      <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+    </div>
+  </nav>
+  <div id="mobile-menu" class="mobile-menu">
+    <ul role="list">
+      <li><a href="index.html"   class="mobile-nav-link">Home</a></li>
+      <li><a href="events.html"  class="mobile-nav-link">Events</a></li>
+      <li><a href="menu.html"    class="mobile-nav-link">Menu</a></li>
+      <li><a href="live.html"    class="mobile-nav-link">Live Streams</a></li>
+      <li><a href="radio.html"   class="mobile-nav-link">Radio</a></li>
+      <li><a href="gallery.html" class="mobile-nav-link">Gallery</a></li>
+      <li><a href="about.html"   class="mobile-nav-link">About</a></li>
+      <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="bus-hero" aria-labelledby="bus-heading">
+    <div class="container">
+      <div class="bus-marquee">
+        <span>&#9679;</span>
+        <span>You found it</span>
+        <span>&#9679;</span>
+        <span>Secret entrance</span>
+        <span>&#9679;</span>
+        <span>No hurries, no worries</span>
+        <span>&#9679;</span>
+      </div>
+      <h1 class="bus-title" id="bus-heading">THE<br><em>BUS.</em></h1>
+      <p class="bus-sub">There's a bar inside a bus inside a bar. You already knew this wasn't a normal place. Welcome to the part most people walk right past. Pull up a seat. You earned it.</p>
+    </div>
+  </section>
+
+  <!-- THE STORY -->
+  <section class="section" aria-labelledby="bus-story-heading">
+    <div class="container container-narrow">
+      <div class="section-header" style="text-align:left;">
+        <p class="section-eyebrow">The Origin</p>
+        <h2 class="section-title" id="bus-story-heading">How a Bus Became a Bar</h2>
+      </div>
+      <div class="body-text fade-in">
+        <p>Not everything at The VooDoo Hut was planned. The bus wasn't a concept — it was a feeling. Someone looked at an old vehicle sitting somewhere it didn't belong and saw exactly where it did belong: parked inside 14,000 square feet of controlled chaos, converted into a bar, serving drinks to people who didn't know they needed to find it.</p>
+        <p>That's been the Hut's whole philosophy since day one. You walk in, and there's more than you expected. Then more. Then something you can't explain. The bus is just the most literal version of that — a door inside a door, a bar inside a bar.</p>
+        <p>If you've never had a drink on The Bus, put it on the list. It hits different.</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Scavenger hunt clue (shown by JS when radio clue found) -->
+      <p id="bus-secret-clue" class="secret-clue" aria-label="Hidden clue" style="display:none;">
+        ✦ the spirits have more to say ✦
+      </p>
+    </div>
+  </section>
+
+  <!-- COMMUNITY BOARD -->
+  <section class="section section-dark" aria-labelledby="board-heading">
+    <div class="container">
+      <div class="section-header" style="text-align:center;flex-direction:column;align-items:center;">
+        <p class="section-eyebrow">Community</p>
+        <h2 class="section-title" id="board-heading">Leave Your Mark</h2>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto;">This is the Bus Bar message board. Say something. Anything. The regulars are here.</p>
+      </div>
+
+      <div class="bus-board fade-in" style="max-width:640px;margin:0 auto;">
+        <div class="bus-board-header">
+          <span class="bus-board-title">The Bus Board</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);" id="msg-count">— messages</span>
+        </div>
+
+        <ul class="bus-messages" id="bus-messages" role="list" aria-live="polite">
+          <!-- Seed messages (always shown) -->
+          <li class="bus-message">
+            <div class="bus-msg-avatar" aria-hidden="true">🎸</div>
+            <div class="bus-msg-body">
+              <p class="bus-msg-name">Regular #001</p>
+              <p class="bus-msg-text">Been coming here since the beginning. The bus still gets me every time. Nine years and it never gets old.</p>
+              <p class="bus-msg-time">9 years ago · Kemah, TX</p>
+            </div>
+          </li>
+          <li class="bus-message">
+            <div class="bus-msg-avatar" aria-hidden="true">🍹</div>
+            <div class="bus-msg-body">
+              <p class="bus-msg-name">First-Timer</p>
+              <p class="bus-msg-text">I literally did not know there was a bar inside a bus inside a bar until my third visit. Then I sat in here for two hours.</p>
+              <p class="bus-msg-time">2 years ago</p>
+            </div>
+          </li>
+          <li class="bus-message">
+            <div class="bus-msg-avatar" aria-hidden="true">🌙</div>
+            <div class="bus-msg-body">
+              <p class="bus-msg-name">The Late Crowd</p>
+              <p class="bus-msg-text">The Bus at 1am is a completely different universe. If you know, you know.</p>
+              <p class="bus-msg-time">Last Saturday</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="bus-compose" role="form" aria-label="Leave a message on the Bus Board">
+          <input
+            id="bus-msg-input"
+            type="text"
+            maxlength="180"
+            placeholder="Say something to the Bus Bar crew..."
+            aria-label="Your message"
+          />
+          <button class="btn btn-gold btn-sm" onclick="postMessage()" aria-label="Post message">Post</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUS BAR RULES -->
+  <section class="section" aria-label="Bus Bar rules">
+    <div class="container container-narrow">
+      <div class="section-header" style="text-align:center;flex-direction:column;align-items:center;">
+        <h2 class="section-title">The Rules of The Bus</h2>
+      </div>
+      <div class="stages-grid fade-in" style="grid-template-columns:1fr 1fr;">
+        <div class="card card-gold">
+          <div class="card-body" style="text-align:center;padding:28px;">
+            <span style="font-size:36px;display:block;margin-bottom:12px;">🤫</span>
+            <h3 style="font-size:16px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">First rule</h3>
+            <p style="font-size:14px;color:var(--muted);">Don't tell everyone about The Bus. Let them find it. The discovery is half the magic.</p>
+          </div>
+        </div>
+        <div class="card card-red">
+          <div class="card-body" style="text-align:center;padding:28px;">
+            <span style="font-size:36px;display:block;margin-bottom:12px;">🥂</span>
+            <h3 style="font-size:16px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Second rule</h3>
+            <p style="font-size:14px;color:var(--muted);">You buy a round for whoever you brought. They didn't know. You knew. That's on you — and it's the right call.</p>
+          </div>
+        </div>
+        <div class="card card-cyan">
+          <div class="card-body" style="text-align:center;padding:28px;">
+            <span style="font-size:36px;display:block;margin-bottom:12px;">🚌</span>
+            <h3 style="font-size:16px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Third rule</h3>
+            <p style="font-size:14px;color:var(--muted);">When you leave, leave a story. The Bus remembers everyone. It deserves to remember you too.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body" style="text-align:center;padding:28px;">
+            <span style="font-size:36px;display:block;margin-bottom:12px;">♾️</span>
+            <h3 style="font-size:16px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">No hurries</h3>
+            <p style="font-size:14px;color:var(--muted);">No hurries. No worries. Stay as long as you want. The night isn't over until you decide it is.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo-wrap" style="margin-bottom:16px;">
+            <img src="assets/images/logo.png" alt="VooDoo Hut" class="logo-img" style="height:64px;" />
+          </a>
+          <p class="footer-tagline">Live music. Craft cocktails.<br>Streaming worldwide.</p>
+          <div class="footer-social">
+            <a href="#" class="social-link" aria-label="Facebook">FB</a>
+            <a href="#" class="social-link" aria-label="Instagram">IG</a>
+            <a href="#" class="social-link" aria-label="YouTube">YT</a>
+            <a href="#" class="social-link" aria-label="Twitch">TW</a>
+          </div>
+          <p class="footer-credit">AV &amp; Broadcast by <a href="https://htxpunk.com" target="_blank" rel="noopener">HTXPunk.com</a></p>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links" role="list">
+            <li><a href="events.html">Events &amp; Shows</a></li>
+            <li><a href="menu.html">Food &amp; Drinks</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="merch.html">Merch</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Broadcast</h4>
+          <ul class="footer-links" role="list">
+            <li><a href="live.html">Live Streams</a></li>
+            <li><a href="radio.html">Radio Station</a></li>
+            <li><a href="contact.html?topic=advertising">Advertise on Radio</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Visit</h4>
+          <address class="footer-address">
+            <p>1234 Kemah Waterfront Dr<br>Kemah, TX 77565</p>
+          </address>
+          <div class="footer-hours">
+            <p><strong>Mon–Thu</strong> 11AM – 12AM</p>
+            <p><strong>Fri–Sat</strong> 11AM – 2AM</p>
+            <p><strong>Sunday</strong> 11AM – 10PM</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 The VooDoo Hut. All rights reserved.</p>
+        <p>Kemah, TX · <a href="mailto:info@voodoohut.com">info@voodoohut.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="radio-player" class="radio-player" role="region" aria-label="Radio player">
+    <div class="radio-player-inner">
+      <div class="radio-player-brand">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="radio-player-name">Voodoo Hut Radio</span>
+      </div>
+      <div class="radio-player-track"><span id="now-playing">Tap play to tune in</span></div>
+      <div class="radio-player-controls">
+        <input id="radio-volume" type="range" min="0" max="1" step="0.05" value="0.8" class="radio-volume" aria-label="Volume" />
+        <button id="radio-play" class="radio-play-btn" aria-label="Play radio">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        </button>
+        <a href="radio.html" class="radio-player-link">&#9654;&#9654;</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/easter-eggs.js"></script>
+  <script>
+    /* LocalStorage message board */
+    const BOARD_KEY = 'vh_bus_board';
+    const AVATARS   = ['🎸','🍹','🌙','🎶','🥂','🔥','💀','🎭','🌊','✨'];
+    const SEED_COUNT = 3;
+
+    function getMessages() {
+      try { return JSON.parse(localStorage.getItem(BOARD_KEY) || '[]'); }
+      catch { return []; }
+    }
+    function saveMessages(msgs) {
+      localStorage.setItem(BOARD_KEY, JSON.stringify(msgs.slice(-50))); // cap at 50
+    }
+
+    function renderMessages() {
+      const list = document.getElementById('bus-messages');
+      const msgs = getMessages();
+      // Remove user-added items (keep the 3 seed LIs)
+      while (list.children.length > SEED_COUNT) list.removeChild(list.lastChild);
+      msgs.forEach(m => {
+        const li = document.createElement('li');
+        li.className = 'bus-message';
+        li.innerHTML = `
+          <div class="bus-msg-avatar" aria-hidden="true">${m.avatar}</div>
+          <div class="bus-msg-body">
+            <p class="bus-msg-name">${escHtml(m.name)}</p>
+            <p class="bus-msg-text">${escHtml(m.text)}</p>
+            <p class="bus-msg-time">${m.time}</p>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+      const count = SEED_COUNT + msgs.length;
+      document.getElementById('msg-count').textContent = count + ' message' + (count !== 1 ? 's' : '');
+    }
+
+    function postMessage() {
+      const input = document.getElementById('bus-msg-input');
+      const text  = input.value.trim();
+      if (!text) return;
+      const msgs = getMessages();
+      msgs.push({
+        avatar: AVATARS[Math.floor(Math.random() * AVATARS.length)],
+        name:   'Bus Bar Guest',
+        text,
+        time:   'Just now',
+      });
+      saveMessages(msgs);
+      input.value = '';
+      renderMessages();
+      document.getElementById('bus-messages').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.getElementById('bus-msg-input')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') postMessage();
+    });
+
+    renderMessages();
+  </script>
+</body>
+</html>

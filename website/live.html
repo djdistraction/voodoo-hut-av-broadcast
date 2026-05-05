@@ -16,7 +16,7 @@
 
   <nav id="main-nav" class="main-nav" aria-label="Main navigation">
     <div class="nav-inner container">
-      <a href="index.html" class="nav-logo">THE <span>VOODOO</span> HUT</a>
+      <a href="index.html" class="nav-logo-wrap" aria-label="The VooDoo Hut — Home"><img src="assets/images/logo.png" alt="VooDoo Hut" class="logo-img" /></a>
       <ul class="nav-links" role="list">
         <li><a href="index.html"   class="nav-link">Home</a></li>
         <li><a href="events.html"  class="nav-link">Events</a></li>
@@ -178,6 +178,8 @@
           </div>
         </div>
       </div>
+      <!-- scavenger clue — shown by easter-eggs.js when previous clue found -->
+      <p id="live-secret-clue" class="secret-clue" style="display:none;">✦ the patio always has more to say ✦</p>
     </div>
   </section>
 
@@ -349,5 +351,6 @@
       }
     }
   </script>
+  <script src="assets/js/easter-eggs.js"></script>
 </body>
 </html>
