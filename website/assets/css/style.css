@@ -3291,3 +3291,83 @@ footer {
   margin-bottom: 40px;
 }
 .hero-nhw em { color: var(--gold); font-style: normal; }
+
+
+/* ============================================================
+   EQ VISUALISER — animated bars, driven by JS .active class
+   ============================================================ */
+
+/* Keyframe animations — each bar has a different speed/height combo */
+@keyframes eq1 { 0%,100%{height:4px}  25%{height:22px} 75%{height:10px} }
+@keyframes eq2 { 0%,100%{height:14px} 33%{height:4px}  66%{height:28px} }
+@keyframes eq3 { 0%,100%{height:8px}  20%{height:30px} 60%{height:6px}  }
+@keyframes eq4 { 0%,100%{height:18px} 40%{height:4px}  80%{height:24px} }
+@keyframes eq5 { 0%,100%{height:6px}  15%{height:26px} 55%{height:12px} }
+@keyframes eq6 { 0%,100%{height:20px} 35%{height:4px}  70%{height:16px} }
+@keyframes eq7 { 0%,100%{height:10px} 50%{height:28px} 85%{height:6px}  }
+@keyframes eq8 { 0%,100%{height:4px}  30%{height:20px} 65%{height:14px} }
+
+.eq-visualiser {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 32px;
+  margin-bottom: 12px;
+}
+
+.eq-bar {
+  width: 5px;
+  height: 4px;
+  background: var(--red);
+  border-radius: 2px 2px 0 0;
+  transition: background .3s;
+}
+
+/* Assign individual animations to each bar */
+.eq-visualiser .eq-bar:nth-child(1).active { animation: eq1 .6s ease-in-out infinite; background: var(--red); }
+.eq-visualiser .eq-bar:nth-child(2).active { animation: eq2 .5s ease-in-out infinite; background: var(--red); }
+.eq-visualiser .eq-bar:nth-child(3).active { animation: eq3 .7s ease-in-out infinite; background: var(--cyan); }
+.eq-visualiser .eq-bar:nth-child(4).active { animation: eq4 .45s ease-in-out infinite; background: var(--cyan); }
+.eq-visualiser .eq-bar:nth-child(5).active { animation: eq5 .65s ease-in-out infinite; background: var(--gold); }
+.eq-visualiser .eq-bar:nth-child(6).active { animation: eq6 .55s ease-in-out infinite; background: var(--gold); }
+.eq-visualiser .eq-bar:nth-child(7).active { animation: eq7 .48s ease-in-out infinite; background: var(--red); }
+.eq-visualiser .eq-bar:nth-child(8).active { animation: eq8 .72s ease-in-out infinite; background: var(--cyan); }
+
+/* Compact version in the bottom bar */
+.eq-visualiser-sm {
+  height: 20px;
+  gap: 3px;
+  margin: 0 8px 0 0;
+}
+.eq-visualiser-sm .eq-bar { width: 3px; }
+.eq-visualiser-sm .eq-bar:nth-child(1).active { animation: eq1 .6s  ease-in-out infinite; }
+.eq-visualiser-sm .eq-bar:nth-child(2).active { animation: eq3 .5s  ease-in-out infinite; }
+.eq-visualiser-sm .eq-bar:nth-child(3).active { animation: eq5 .7s  ease-in-out infinite; }
+.eq-visualiser-sm .eq-bar:nth-child(4).active { animation: eq2 .45s ease-in-out infinite; }
+.eq-visualiser-sm .eq-bar:nth-child(5).active { animation: eq4 .65s ease-in-out infinite; }
+
+/* ============================================================
+   PLACEHOLDER NOTICE BANNER
+   ============================================================ */
+.placeholder-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 180, 0, 0.08);
+  border-bottom: 1px solid rgba(255, 180, 0, 0.25);
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  justify-content: center;
+}
+.placeholder-notice strong { color: var(--gold); }
+.placeholder-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
