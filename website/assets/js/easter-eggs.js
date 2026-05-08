@@ -319,6 +319,31 @@
   window.resetClues = resetClues;
 
   /* ============================================================
+     EASTER EGG 4 — TYPE "spirits" ANYWHERE → Ouija Board
+     ============================================================ */
+  function initOuija() {
+    let typed = '';
+    document.addEventListener('keydown', function(e) {
+      typed += e.key.toLowerCase();
+      typed = typed.slice(-7); // keep last 7 chars
+      if (typed.includes('spirits')) {
+        typed = '';
+        // fly to ouija page same style as tarot — fade veil then navigate
+        const veil = document.createElement('div');
+        veil.style.cssText = 'position:fixed;inset:0;background:#000;opacity:0;z-index:9999;transition:opacity .8s ease;pointer-events:none;';
+        document.body.appendChild(veil);
+        requestAnimationFrame(() => { veil.style.opacity = '1'; });
+        setTimeout(() => {
+          // handle path depth (secret/ pages are one level deeper)
+          const inSecret = location.pathname.includes('/secret/');
+          window.location.href = inSecret ? 'ouija.html' : 'secret/ouija.html';
+        }, 850);
+      }
+    });
+  }
+  initOuija();
+
+  /* ============================================================
      INIT
      ============================================================ */
   document.addEventListener('DOMContentLoaded', () => {
